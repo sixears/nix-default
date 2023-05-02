@@ -1,0 +1,3 @@
+let handlers = { Radio = λ(_ : {}) → "radio"
+               , TV    = λ(_ : {}) → "tv" }
+ in λ(m : ./searchmodeType) → merge { Radio = "radio", TV = "tv" } m

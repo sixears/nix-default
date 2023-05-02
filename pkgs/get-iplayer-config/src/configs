@@ -1,0 +1,71 @@
+    let p = ./prelude
+
+ in let nullT     : Optional Text → Text
+                  = λ(t : Optional Text) → if p.nullT t then "0" else "1"
+
+ in let chantxt   : Optional Text → Optional Text
+                  -- channel Text
+                  = let prechan   : Text → Text
+                                  = λ(c : Text) → "channel " ++ c
+                     in λ(oc : Optional Text) → p.omap Text Text prechan oc
+
+ in let modeT     : (Optional ./searchmodeType) → Optional Text
+                  = let typetxt   : ./searchmodeType → Text
+                       -- search type Text
+                       = λ(t : ./searchmodeType) → ("type " : Text) ++ (./searchtypeDecode t : Text)
+                    in λ(om : Optional ./searchmodeType) →
+                         p.omap ./searchmodeType Text typetxt om
+
+ in let regexT      : ./searchRegexType → Text
+                   = λ(r : ./searchRegexType) →
+                          let f = ./prelude
+                       in let handlers = { Simple = λ(t : Text) → t
+                                         , Multi  = λ(ts : List Text) →
+                                                      f.intercalateT ".*" ts
+                                         }
+                       in merge handlers r
+
+ in let searchFile : ./searchType → Text
+                   = λ(s : ./searchType) →
+                          let mt    = modeT s.type
+                       in let rx    = regexT s.regex
+                       in let los   = [ Some "---- pvr/${s.name}"
+                                      , Some "search0 ${rx}"
+                                      , modeT s.type
+                                      , chantxt s.channel
+                                      , Some "--------"
+                                      ]
+                       in p.unlines (p.catMaybes Text los)
+
+ in let optionsFile = λ(cfg : ./optionsType) →
+        let rf = ./bool1 cfg.refreshfuture
+     in let np = ./bool1 cfg.nopurge
+     in let st = ./bool1 cfg.subtitles
+     in let ws = ./bool1 cfg.whitespace
+     in let sw = ./bool1 cfg.subsraw
+     in let sd = nullT cfg.subdirformat
+     in ''
+        ---- options
+        outputtv ${cfg.outputtv}
+        outputradio ${cfg.outputradio}
+        refreshfuture ${rf}
+        tvmode best
+        radiomode best
+        subtitles ${st}
+        nopurge ${np}
+        subdir ${sd}
+        whitespace ${ws}
+        subdirformat <nameshort>
+        fileprefix <nameshort>< - senum>< - episodeshort>
+        subsraw ${sw}
+        --------
+        ''
+
+ in let concatSearches =
+            λ(ss : List ./searchType) →
+                p.concatT (p.map ./searchType Text searchFile ss)
+ in
+
+λ ( c : ./configType ) → p.concatT [ optionsFile c.options
+                                   , concatSearches c.searches
+                                   ]

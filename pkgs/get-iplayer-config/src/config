@@ -1,0 +1,146 @@
+    let p = ./prelude
+ in let searchmodeType = ./searchmodeType
+ in let Radio  = Some searchmodeType.Radio
+ in let TV     = Some searchmodeType.TV
+ in let SimpleOrMulti = < Simple : Text | Multi : List Text >
+ in let Simple = λ(s : Text) → SimpleOrMulti.Simple s
+ in let Multi  = λ(ss : List Text) → SimpleOrMulti.Multi ss
+ in let radioSearch  = λ(s : Text) → { name = s
+                                     , regex = Simple s
+                                     , type = Radio
+                                     , channel = None Text
+                                     } : ./searchType
+ in let radioSearchM = λ(ss : List Text)
+                                   → { name = p.concatT ss
+                                     , regex = Multi ss
+                                     , type = Radio
+                                     , channel = None Text
+                                     } : ./searchType
+ in let tvSearch     = λ(s : Text) → { name = s
+                                     , regex = Simple s
+                                     , type = TV
+                                     , channel = None Text
+                                     } : ./searchType
+ in let tvSearchN    = λ(n : Text) → λ(s : Text) →
+                                     { name = n
+                                     , regex = Simple s
+                                     , type = TV
+                                     , channel = None Text
+                                     } : ./searchType
+ in let tvSearchM    = λ(ss : List Text)
+                                   → { name = p.concatT ss
+                                     , regex = Multi ss
+                                     , type = TV
+                                     , channel = None Text
+                                     } : ./searchType
+ in let tvSearchC    = λ(s : Text) → λ(c : Text)
+                                   → { name = s
+                                     , regex = Simple s
+                                     , type = TV
+                                     , channel = Some c
+                                     } : ./searchType
+ in let modeType = ./modeType
+ in let best = modeType.Best
+ in
+
+{
+  options = { outputtv    = "/get-iplayer/tv/"
+            , outputradio = "/get-iplayer/radio/"
+            , refreshfuture = True
+            , tvmode        = modeType.Best
+            , radiomode     = modeType.Best
+            , nopurge       = True
+            , subdirformat  = Some "<nameshort>"
+            , fileprefix    = "<nameshort>< - senum>< - episodeshort>"
+            , subtitles     = True
+            , subsraw       = True
+            , whitespace    = True
+            }
+  -- Prefer 50 fps streams for TV programmes (not available for all video sizes).
+
+, searches = [ radioSearch  "Across the Red Line"
+             , radioSearch  "Andy Hamilton"
+             , tvSearch     "ABC Murders"
+             , tvSearch     "Ashes to Ashes"
+             , tvSearchM    [ "BBC", "Sessions" ]
+             , tvSearch     "Baptiste"
+             , radioSearch  "Bernard Cribbins"
+             , tvSearch     "Beyond Paradise"
+             , tvSearch     "Blake's 7"
+             , radioSearch  "Bowie "
+             , tvSearch     "Bowie"
+             , tvSearch     "Call the Midwife"
+             , tvSearch     "The Choir: Our School by the Tower"
+             , tvSearch     "Classic Albums"
+             , tvSearch     "Culture in Quarantine"
+             , tvSearchC    "Danger Mouse"                                "CBBC"
+             , tvSearch     "Death in Paradise"
+             , tvSearch     "Dipdap"
+             , tvSearch     "Doctor Who"
+             , tvSearch     "Dracula"
+             , tvSearch     "Emma"
+             , tvSearch     "George Gently"
+             , tvSearch     "The Goes Wrong Show"
+             , tvSearch     "Ghosts"
+             , tvSearch     "Going Straight"
+             , tvSearch     "Good Life"
+             , tvSearch     "Guitar, Drum and Bass"
+             , tvSearchM    [ "Have I Got ", "More News for You" ]
+             , tvSearch     "His Dark Materials"
+             , radioSearchM [ "I'm Sorry ", "I Haven't a Clue" ]
+             , radioSearch  "Jeeves - Live"
+             , radioSearch  "Just a Minute"
+             , tvSearch     "Later... with Jools Holland"
+             , tvSearch     "Les Miserables"
+             , tvSearch     "Life on Mars"
+             , tvSearch     "Line of Duty"
+             , tvSearch     "Luther"
+             , tvSearch     "Killing Eve"
+             , radioSearch  "Mastertapes"
+             , radioSearch  "Monty Python at 50"
+             , tvSearchM    [ "Morecambe ", "Wise" ]
+             , radioSearch  "News Quiz"
+             , tvSearchM    [ "Noughts ", " Crosses" ]
+             , tvSearch     "Paula"
+             , tvSearch     "Peaky Blinders"
+             , tvSearch     "Planet Earth"
+             , tvSearchN    "Porridge"              "^Porridge"
+             , radioSearch  "Psychologically Speaking"
+             , tvSearch     "QI"
+             , tvSearch     "QI XL"
+             , tvSearch     "Responder"
+             , tvSearchM    [ "Rock", "Roll Years" ]
+             , tvSearch     "Rock Family Trees"
+             , tvSearch     "Secret State"
+             , tvSearch     "Seven Ages of Rock"
+             , tvSearch     "Shaun the Sheep"
+             , tvSearch     "Sherwood"
+             , tvSearch     "Silent Witness"
+             , radioSearch  "Sound of Cinema"
+             , tvSearchM    [ "Sound of", "Cinema" ]
+             , tvSearch     "Sounds of the"
+             , tvSearch     "SS-GB"
+             , tvSearch     "Staged"
+             , tvSearchC    "Strange Hill High"                           "CBBC"
+             , tvSearch     "Taboo"
+             -- Be sure to get 'Time' the series (e.g., Time: Series 1) but not
+             -- everything with 'Time' in the name
+             , tvSearch     "^Time:"
+             , tvSearch     "This is Going to Hurt"
+             , tvSearch     "TOTP2"
+             , tvSearch     "Top Cat"
+             , tvSearch     "Trapped"
+             , tvSearch     "The Trial of Christine Keeler"
+             , tvSearch     "Two Ronnies"
+             , radioSearch  "Unbelievable Truth"
+             , radioSearch  "Unreliable Memoirs"
+             , tvSearch     "Vigil"
+             , tvSearch     "W1A"
+             , tvSearch     "What The Ancients Did for Us"
+             , tvSearch     "Whistle Test"
+             , tvSearch     "A Very British Scandal"
+             , tvSearch     "A Very English Scandal"
+             ]
+} : ./configType
+
+

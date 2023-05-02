@@ -1,0 +1,5 @@
+{ name    : Text
+, regex   : ./searchRegexType
+, type    : Optional ./searchmodeType
+, channel : Optional Text
+}

@@ -1,0 +1,13 @@
+{ outputtv      : Text
+, outputradio   : Text
+, refreshfuture : Bool
+, tvmode        : ./modeType
+, radiomode     : ./modeType
+, nopurge       : Bool
+, subdirformat  : Optional Text
+, fileprefix    : Text
+, subtitles     : Bool
+, subsraw       : Bool
+, whitespace    : Bool
+}
+
