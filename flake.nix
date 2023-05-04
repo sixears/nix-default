@@ -5,13 +5,18 @@
     nixpkgs.url     = github:nixos/nixpkgs/be44bf67; # nixos-22.05 2022-10-15
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
     hpkgs1.url      = github:sixears/hpkgs1/r0.0.9.0;
+    myPkgs          = {
+      url    = github:sixears/nix-pkgs/r0.0.1.0;
+      inputs = { nixpkgs.follows = "nixpkgs"; };
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, hpkgs1 }:
+  outputs = { self, nixpkgs, flake-utils, hpkgs1, myPkgs }:
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-        hpkgs = hpkgs1.packages.${system};
+        pkgs    = nixpkgs.legacyPackages.${system};
+        hpkgs   = hpkgs1.packages.${system};
+        my-pkgs = myPkgs.packages.${system};
 
         # -- vpn -----------------------
 
@@ -90,11 +95,6 @@
             # -- nix tools -------------
             inherit nix-prefetch-git nix-prefetch-github;
 
-            # -- alacritty should be in x, but if you do that, you need to
-            # -- do something with .xmonad, too
-            inherit alacritty;
-            byobu = import ./pkgs/byobu.nix { inherit pkgs; };
-
             # -- miscellaneous ---------
 
             inherit jq;
@@ -107,6 +107,7 @@
             #  inherit vulnix;
 
             inherit scowl; # for dict/words
+            inherit (my-pkgs) byobu;
           });
         }
     );
