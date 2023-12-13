@@ -4,7 +4,8 @@
   inputs = {
     nixpkgs.url     = github:nixos/nixpkgs/be44bf67; # nixos-22.05 2022-10-15
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
-    hpkgs1.url      = github:sixears/hpkgs1/r0.0.9.0;
+#    hpkgs1.url      = github:sixears/hpkgs1/r0.0.9.0;
+    hpkgs1.url      = "/home/martyn/src/hpkgs1";
     myPkgs          = {
       url    = github:sixears/nix-pkgs/r0.0.1.0;
       inputs = { nixpkgs.follows = "nixpkgs"; };
@@ -16,6 +17,7 @@
       let
         pkgs    = nixpkgs.legacyPackages.${system};
         hpkgs   = hpkgs1.packages.${system};
+        hlib    = hpkgs1.lib.${system};
         my-pkgs = myPkgs.packages.${system};
 
         # -- vpn -----------------------
@@ -44,17 +46,29 @@
 
             # console tools & editors
             inherit screen tmux; tmux-man = pkgs.tmux.man;
-            emacs = emacsPackagesNg.emacsWithPackages (ps: with ps; [
+
+            emacs = hlib.nixpkgs.emacsPackagesNg.emacsWithPackages (ps: with ps; [
+                # lsp/haskell-nix:
+                # https://thomasbach.dev/posts/2021-08-26-nixos-haskell-emacs-lsp.html
                 babel
+                company
+                dap-mode
+                direnv
                 flycheck
                 flycheck-haskell
                 haskell-mode
                 haskell-unicode-input-method
+                iedit
                 ivy
+                lsp-haskell
+                lsp-mode
+                lsp-treemacs
+                lsp-ui
                 markdown-mode
                 mmm-mode
                 nix-mode
                 org-babel-eval-in-repl
+                structured-haskell-mode
                 swiper
                 yaml-mode
                 yasnippet
@@ -67,9 +81,11 @@
 
                 pkgs.git
 
-                pkgs.haskellPackages.stylish-haskell
-                pkgs.haskellPackages.hlint
-                pkgs.haskellPackages.ghc
+                hlib.nixpkgs.haskellPackages.cabal-install
+                hlib.nixpkgs.haskellPackages.ghc
+                hlib.nixpkgs.haskellPackages.hlint
+#                hlib.nixpkgs.haskellPackages.stack
+#                hlib.nixpkgs.haskellPackages.stylish-haskell
               ]);
 
             # email
@@ -108,6 +124,8 @@
 
             inherit scowl; # for dict/words
             inherit (my-pkgs) byobu;
+
+#             net-snmp = net-snmp.override { withPerlTools = true; inherit openssl; };
           });
         }
     );
