@@ -2,17 +2,16 @@
   description = "basic setup for nix";
 
   inputs = {
-    nixpkgs.url     = github:nixos/nixpkgs/be44bf67; # nixos-22.05 2022-10-15
+    nixpkgs.url     = github:NixOS/nixpkgs/354184a; # master 2023-12-13
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
-#    hpkgs1.url      = github:sixears/hpkgs1/r0.0.9.0;
-    hpkgs1.url      = "/home/martyn/src/hpkgs1";
+    hpkgs1.url      = github:sixears/hpkgs1/r0.0.23.0;
     myPkgs          = {
       url    = github:sixears/nix-pkgs/r0.0.1.0;
       inputs = { nixpkgs.follows = "nixpkgs"; };
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, hpkgs1, myPkgs }:
+  outputs = { self, nixpkgs, flake-utils, hixpkgs, hpkgs1, myPkgs }:
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       let
         pkgs    = nixpkgs.legacyPackages.${system};
@@ -47,7 +46,7 @@
             # console tools & editors
             inherit screen tmux; tmux-man = pkgs.tmux.man;
 
-            emacs = hlib.nixpkgs.emacsPackagesNg.emacsWithPackages (ps: with ps; [
+            emacs = hlib.nixpkgs.emacs.pkgs.emacsWithPackages (ps: with ps; [
                 # lsp/haskell-nix:
                 # https://thomasbach.dev/posts/2021-08-26-nixos-haskell-emacs-lsp.html
                 babel
@@ -68,7 +67,9 @@
                 mmm-mode
                 nix-mode
                 org-babel-eval-in-repl
-                structured-haskell-mode
+                ## requires 'descriptive' package, which is marked as broken and
+                ## even pre-broken does not compile with ghc9
+                # structured-haskell-mode
                 swiper
                 yaml-mode
                 yasnippet
