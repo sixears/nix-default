@@ -495,22 +495,6 @@
         "type": "github"
       }
     },
-    "hixpkgs": {
-      "locked": {
-        "lastModified": 1697933910,
-        "narHash": "sha256-32VQq2AuGIZBH3zzwNOKSs5WTSfiyQ2CmckkDPiN/wo=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "f8e6a54a9dfb3e7ad00598dac18babbf46e47057",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "f8e6a54a",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "hostsdb-src-0-1-1-4": {
       "flake": false,
       "locked": {
@@ -890,16 +874,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1683196138,
-        "narHash": "sha256-5rAHdEeF8M/W18PRv3BgEXYBQ+IDArQnVLMeYxgeaHg=",
+        "lastModified": 1703672769,
+        "narHash": "sha256-Si6ukJ7ZyoS4dS69tcXC8SvbroNSOktPyR+JT4AcwBg=",
         "owner": "sixears",
         "repo": "nix-pkgs",
-        "rev": "0536bea6d5850bee237c2cdc169531bc03838de8",
+        "rev": "110210698ac7696874e362e02048ab80187b5f73",
         "type": "github"
       },
       "original": {
         "owner": "sixears",
-        "ref": "r0.0.1.0",
+        "ref": "r0.0.1.4",
         "repo": "nix-pkgs",
         "type": "github"
       }
@@ -1126,7 +1110,6 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "hixpkgs": "hixpkgs",
         "hpkgs1": "hpkgs1",
         "myPkgs": "myPkgs",
         "nixpkgs": "nixpkgs_2"
