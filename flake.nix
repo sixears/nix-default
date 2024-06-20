@@ -2,7 +2,7 @@
   description = "basic setup for nix";
 
   inputs = {
-    nixpkgs.url     = github:NixOS/nixpkgs/354184a; # master 2023-12-13
+    nixpkgs.url     = github:NixOS/nixpkgs/938aa157; # nixos-24.05 2024-06-20
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
     hpkgs1.url      = github:sixears/hpkgs1/r0.0.23.0;
     myPkgs          = {
@@ -36,7 +36,7 @@
         rec {
           packages = flake-utils.lib.flattenTree (with pkgs; {
             # general utilities
-            inherit miscfiles nfs-utils wget direnv nix-direnv;
+            inherit miscfiles nfs-utils wget direnv nix-direnv ncdu;
 
             inherit footswitch;
 
@@ -53,12 +53,15 @@
                 company
                 dap-mode
                 direnv
+                fira-code-mode # https://github.com/tonsky/FiraCode/wiki/Emacs-instructions
                 flycheck
                 flycheck-haskell
+                fontawesome
                 haskell-mode
                 haskell-unicode-input-method
                 iedit
                 ivy
+                ligature
                 lsp-haskell
                 lsp-mode
                 lsp-treemacs
@@ -90,7 +93,7 @@
               ]);
 
             # email
-            inherit mutt;
+            inherit mutt gnupg pinentry lynx;
 
             # -- haskell tools ---------
 
