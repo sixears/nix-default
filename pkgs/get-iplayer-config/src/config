@@ -123,10 +123,11 @@
              , tvSearch     "Staged"
              , tvSearchC    "Strange Hill High"                           "CBBC"
              , tvSearch     "Taboo"
+             , tvSearch     "The Way"
+             , tvSearch     "This is Going to Hurt"
              -- Be sure to get 'Time' the series (e.g., Time: Series 1) but not
              -- everything with 'Time' in the name
              , tvSearch     "^Time:"
-             , tvSearch     "This is Going to Hurt"
              , tvSearch     "TOTP2"
              , tvSearch     "Top Cat"
              , tvSearch     "Trapped"
