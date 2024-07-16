@@ -9,15 +9,21 @@
       url    = github:sixears/nix-pkgs/r0.0.1.5;
       inputs = { nixpkgs.follows = "nixpkgs"; };
     };
+    bashHeader      = {
+      url    = github:sixears/bash-header/r0.0.5.0;
+#      url    = path:/home/martyn/src/bash-header;
+      inputs = { nixpkgs.follows = "nixpkgs"; };
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, hpkgs1, myPkgs }:
+  outputs = { self, nixpkgs, flake-utils, hpkgs1, myPkgs, bashHeader }:
     flake-utils.lib.eachSystem ["x86_64-linux"] (system:
       let
-        pkgs    = nixpkgs.legacyPackages.${system};
-        hpkgs   = hpkgs1.packages.${system};
-        hlib    = hpkgs1.lib.${system};
-        my-pkgs = myPkgs.packages.${system};
+        pkgs        = nixpkgs.legacyPackages.${system};
+        hpkgs       = hpkgs1.packages.${system};
+        hlib        = hpkgs1.lib.${system};
+        my-pkgs     = myPkgs.packages.${system};
+        bash-header = bashHeader.packages.${system}.bash-header;
 
         # -- vpn -----------------------
 
@@ -130,8 +136,14 @@
             inherit (my-pkgs) byobu;
 
 #             net-snmp = net-snmp.override { withPerlTools = true; inherit openssl; };
+
+            # -- kmonad ----------------
+
+            kmonad-null =
+              let src = import ./kmonad/kmonad-null.nix
+                               { inherit pkgs bash-header; };
+              in  pkgs.writers.writeBashBin "kmonad-null" src;
           });
         }
     );
 }
-

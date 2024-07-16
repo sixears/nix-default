@@ -1,0 +1,15 @@
+(defcfg allow-cmd false)
+
+#| -----------------------------------------------------------------------------
+
+To find the keycodes to use in defsrc, run something like
+
+```
+input="$(echo /dev/input/by-path/*-kbd)"; lsmod | grep uinput && sudo kmonad -i "device-file \"$input\""  -f -l debug ~/nix/default/kmonad/null.kbd --output 'uinput-sink "input"''
+```
+
+----------------------------------------------------------------------------- |#
+
+(defsrc esc)
+
+(deflayer null _)
