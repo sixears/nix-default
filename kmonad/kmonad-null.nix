@@ -1,16 +1,17 @@
-{ pkgs, bash-header }: ''
+{ pkgs, bash-header, null-cfg }: ''
 
 source ${bash-header}
 
 Cmd[lsmod]=${pkgs.kmod}/bin/lsmod
 Cmd[kmonad]=${pkgs.kmonad}/bin/kmonad
+Cmd[unbuffer]=${pkgs.expect}/bin/unbuffer
 
 # ------------------------------------------------------------------------------
 
 Usage="$(''${Cmd[cat]} <<EOF
 usage: $Progname FILENAME*
 
-do some stuff
+output keysyms as received by kmonad
 
 Standard Options:
   -v | --verbose  Be more garrulous, including showing external commands.
@@ -25,8 +26,6 @@ EOF
 main() {
   local -a inputs
   capture_array inputs gocmdnodryrun 10 ls /dev/input/by-path/*-kbd
-
-## input="$(echo /dev/input/by-path/*-kbd)"; lsmod | grep uinput && sudo kmonad -i "device-file \"$input\""  -f -l debug ~/nix/default/kmonad/null.kbd --output 'uinput-sink "input"
 
   case ''${#inputs[@]} in
     0 ) die 13 'no inputs found' ;;
@@ -45,9 +44,11 @@ main() {
         local -a args=( --input 'device-file "'"$input"'"'
                         --output 'uinput-sink "input"'
                         --log-level debug
-                        --fallthrough ~/nix/default/kmonad/null.kbd
+                        --fallthrough ${null-cfg}
                       )
-        gocmd 14 sudo ''${Cmd[kmonad]} "''${args[@]}"
+
+        gocmd 14 sudo ''${Cmd[unbuffer]} ''${Cmd[kmonad]} "''${args[@]}" \
+          | gocmd 17 perl -nlE 'say $1 if /Received event: Press (<.*>)$/'
         ;;
 
     * ) die 15 "too many inputs found: »''${inputs[*]}«" ;;

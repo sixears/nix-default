@@ -140,8 +140,9 @@
             # -- kmonad ----------------
 
             kmonad-null =
-              let src = import ./kmonad/kmonad-null.nix
-                               { inherit pkgs bash-header; };
+              let null-cfg = ./kmonad/null.kbd;
+                  src = import ./kmonad/kmonad-null.nix
+                               { inherit pkgs bash-header null-cfg; };
               in  pkgs.writers.writeBashBin "kmonad-null" src;
           });
         }
