@@ -136,6 +136,7 @@
              , radioSearch  "Unbelievable Truth"
              , radioSearch  "Unreliable Memoirs"
              , tvSearch     "Vigil"
+             , tvSearch     "Waking the Dead"
              , tvSearch     "W1A"
              , tvSearch     "What The Ancients Did for Us"
              , tvSearch     "Whistle Test"

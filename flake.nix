@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url     = github:NixOS/nixpkgs/938aa157; # nixos-24.05 2024-06-20
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
-    hpkgs1.url      = github:sixears/hpkgs1/r0.0.23.0;
+    hpkgs1.url      = github:sixears/hpkgs1/r0.0.37.0;
     myPkgs          = {
       url    = github:sixears/nix-pkgs/r0.0.1.5;
       inputs = { nixpkgs.follows = "nixpkgs"; };
@@ -38,6 +38,7 @@
                                              file-split = hpkgs.file-split;
                                            };
 
+        brian = hpkgs.brian;
       in
         rec {
           packages = flake-utils.lib.flattenTree (with pkgs; {
@@ -144,6 +145,10 @@
                   src = import ./kmonad/kmonad-null.nix
                                { inherit pkgs bash-header null-cfg; };
               in  pkgs.writers.writeBashBin "kmonad-null" src;
+
+            # -- brian -----------------
+
+            inherit brian;
           });
         }
     );
