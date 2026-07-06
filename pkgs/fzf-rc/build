@@ -1,0 +1,20 @@
+set -eu -o pipefail
+
+share=$out/share/$name
+
+$coreutils/bin/mkdir -p $share
+
+export fn_completion=$share/fzf-completion.bash
+export fn_key_bindings=$share/fzf-key-bindings.bash
+
+echo "$completion" | \
+  $perl/bin/perl -plE 's!@(\w+)@!$ENV{$1}//die"No envvar: $1"!e' >\
+  $fn_completion
+
+echo "$key_bindings" | \
+  $perl/bin/perl -plE 's!@(\w+)@!$ENV{$1}//die"No envvar: $1"!e' >\
+  $fn_key_bindings
+
+echo "$rc" | \
+  $perl/bin/perl -plE 's!@(\w+)@!$ENV{$1}//die"No envvar: $1"!e' >\
+  $share/fzf-rc.bash

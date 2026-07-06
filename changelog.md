@@ -1,3 +1,7 @@
+0.0.5.0 2026-06-26
+==================
+- stuff, including updating to use 26.05 (matching OS)
+
 0.0.4.2 2023-12-28
 ==================
 - use my-pkgs 0.0.1.5

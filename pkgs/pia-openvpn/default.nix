@@ -8,7 +8,9 @@
 
 let
   url    = "https://www.privateinternetaccess.com/openvpn/openvpn-strong-tcp.zip";
-  sha256 = "0gzh5pwqd3ypjhip33chn72v2d5mydgrqzg4m4sgvcx7mvb99sgx";
+  # sha256 = "0gzh5pwqd3ypjhip33chn72v2d5mydgrqzg4m4sgvcx7mvb99sgx";
+  # found with nix-prefetch-url https://www.privateinternetaccess.com/openvpn/openvpn-strong-tcp.zip
+  sha256 = "0r32jhrx2xkq9bs1bc1pzmi02jp5jci3ry8qzwlw8mxjyvkncwza";
 
 in stdenv.mkDerivation rec {
   name = "pia-openvpn";
