@@ -4,14 +4,14 @@
   inputs = {
     nixpkgs.url     = github:NixOS/nixpkgs/667d5cf1; # nixos-26.05 2026-06-26
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
-    hpkgs1.url      = github:sixears/hpkgs1/r0.0.55.0;
+    hpkgs1.url      = github:sixears/hpkgs1/r0.0.58.0;
     myPkgs          = {
       url    = github:sixears/nix-pkgs/r0.0.16.0;
 #      url    = path:/home/martyn/nix/pkgs;
       inputs = { nixpkgs.follows = "nixpkgs"; };
     };
     bashHeader      = {
-      url    = github:sixears/bash-header/r0.0.7.0;
+      url    = github:sixears/bash-header/r0.0.8.0;
 #      url    = path:/home/martyn/src/bash-header;
       inputs = { nixpkgs.follows = "nixpkgs"; };
     };

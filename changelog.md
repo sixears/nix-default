@@ -1,3 +1,7 @@
+0.0.6.0 2026-07-07
+==================
+- stuff
+
 0.0.5.0 2026-06-26
 ==================
 - stuff, including updating to use 26.05 (matching OS)
