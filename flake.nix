@@ -6,7 +6,7 @@
     flake-utils.url = github:numtide/flake-utils/c0e246b9;
     hpkgs1.url      = github:sixears/hpkgs1/r0.0.58.0;
     myPkgs          = {
-      url    = github:sixears/nix-pkgs/r0.0.16.0;
+      url    = github:sixears/nix-pkgs/r0.0.17.0;
 #      url    = path:/home/martyn/nix/pkgs;
       inputs = { nixpkgs.follows = "nixpkgs"; };
     };
